@@ -1,34 +1,51 @@
 <script setup>
 import Card from "@/components/product/Card.vue"
-import { ref } from "vue";
-// import { products } from "@/stores";
+import { onBeforeMount, ref } from "vue";
+import { get_products_api } from "@/services/product";
+import CreateProduct from "@/components/product/CreateProduct.vue";
+
+const products = ref([])
+
+onBeforeMount(async () => {
+  await getProducts()
+})
+
+const getProducts = async () => {
+  await get_products_api().then(res => {
+    products.value = res
+    console.log(products.value)
+  })
+}
+
+const showPopupCreate = ref(false)
+
+const openPopupCreate = () => {
+    showPopupCreate.value = true
+}
+
+const closePopupCreate = () => {
+    showPopupCreate.value = false
+}
 
 </script>
 
 <template>
   <div class="main-ctn">
     <div class="main-product">
-      <div class="desc-ctn">
-        <div class="desc-text">
-          <h2>Cartoons And Anime Series</h2>
-          <p>Stream Anytime On Animado</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit amet est
-          aliquam, debitis atque odio neque doloribus ea commodi illum quam, cupiditate
-          ex, dolorem fuga.</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugit amet est
-          aliquam, debitis atque odio neque doloribus ea commodi illum quam, cupiditate
-          ex, dolorem fuga.</p>
-        </div>
+      <button @click="openPopupCreate">Create post</button>
 
-        <img src="/public/anh1.png" alt="">
-      </div>
+     
 
       <div class="ctn-products">
         <Card v-for="(product, index) of products" :product="product"/>
       </div>
     </div>
 
-    
+    <CreateProduct 
+      v-if="showPopupCreate"
+      @close="closePopupCreate"
+    />
+      
 
     <div class="footer">
       <div class="block">

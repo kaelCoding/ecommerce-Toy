@@ -18,7 +18,6 @@ export const api = async (method, url, data) => {
             body: body,
         }).then(async res => {
             const data = await res.json()
-            console.log(data)
 
             if(res.ok) {
                 return data;

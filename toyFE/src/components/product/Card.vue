@@ -1,5 +1,5 @@
 <script setup>
-import Detailproduct from './Detailproduct.vue';
+import Detailproduct from './DetailProduct.vue';
 import { ref } from 'vue';
 const props = defineProps(["product"])
 
@@ -18,8 +18,12 @@ const closePopup = () => {
 <template>
   <Detailproduct :product="product" v-if="showPopup" @close="closePopup"/>
   <div class="ctn" @click="openPopup">
-    <img :src="product.img">
-    <h2>{{ product.name }}</h2>
+    <!-- <div v-if="product.image_urls.length > 0">
+        <img v-for="image of product.image_urls" :key="image.id" :src="$loadFile(image.link)">
+    </div> -->
+    <h2><b>{{ product.name }}</b></h2>
+    <div>{{ product.description }}</div>
+    <div>{{ product.price }}</div>
   </div>
 </template>
 

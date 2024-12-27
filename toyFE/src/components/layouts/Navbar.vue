@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+
 </script>
 
 <template>
@@ -12,6 +14,10 @@
       <li>Blog</li>
       <li>Contact</li>
     </ul>
+    <div style="display: flex; gap: 10px;">
+      <RouterLink to="login">Login</RouterLink>
+      <RouterLink to="register">Register</RouterLink>
+    </div>
   </div>
 </template>
 
