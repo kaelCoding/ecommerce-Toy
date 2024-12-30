@@ -13,8 +13,9 @@ const dataRegister = ref({
 
 const register = async () => {
     try {
-        await auth_register_api(dataRegister.value)
-        
+        await auth_register_api(dataRegister.value).then(res => {
+            router.push("/login")
+        })
     } catch (error) {
         console.log(error)
     }
@@ -22,22 +23,24 @@ const register = async () => {
 </script>
 
 <template>
-    <div class="">
+    <div class="main">
         <div class="ctn">
-            <label>Name</label>
-            <input type="text" v-model="dataRegister.username" placeholder="Name">
+            <form class="form card">
+                <h1 style="text-align: center;">REGISTER</h1>
+                <label>Name</label>
+                <input type="text" v-model="dataRegister.username" placeholder="Name">
 
-            <label>Email</label>
-            <input type="email" v-model="dataRegister.email" placeholder="Email address">
+                <label>Email</label>
+                <input type="email" v-model="dataRegister.email" placeholder="Email address">
 
-            <label>Password</label>
-            <input type="password" v-model="dataRegister.password" placeholder="Password">
+                <label>Password</label>
+                <input type="password" v-model="dataRegister.password" placeholder="Password">
 
-            <button @click="register">Register</button>
-
+                <button type="button" @click="register">Register</button>
+            </form>
             <div class="help-block">
                 Already have an account ?
-                <RouterLink to="/login">Login</RouterLink>
+                <RouterLink to="/login"><b>Login</b></RouterLink>
             </div>
         </div>
     </div>
@@ -47,5 +50,9 @@ const register = async () => {
 
 .help-block {
     margin-top: 24px;
+}
+
+.help-block a {
+    color: var(--c-text);
 }
 </style>

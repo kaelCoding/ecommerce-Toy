@@ -45,6 +45,9 @@ func SetupRouter() *gin.Engine {
 	r.POST("/register", handlers.RegisterUser(database.DB))
 	r.POST("/login", handlers.LoginUser(database.DB))
 
+    r.GET("/auth/info", handlers.GetUser(database.DB))
+    // r.GET("/users", handler.GetAllUsers(database.DB))
+
 	// Product routes
     // r.GET("/load/image/:id", handlers.LoadProductImages)
 	r.POST("/upload", handlers.UploadImage) 

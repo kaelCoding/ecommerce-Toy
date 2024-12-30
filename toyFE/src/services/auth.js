@@ -17,10 +17,10 @@ export const auth_register_api = async (data) => {
     }
 }
 
-// export const auth_info_api = async () => {
-//     try {
-//         return await api("GET", "/auth/info")
-//     } catch (error) {
-//         throw error
-//     }
-// }
+export const auth_info_api = async () => {
+    try {
+        return await api("GET", "/auth/info")
+    } catch (error) {
+        throw error
+    }
+}

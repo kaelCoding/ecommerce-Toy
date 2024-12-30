@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import middleware from './middleware'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,10 +18,12 @@ const router = createRouter({
       component: () => import('../views/LoginView.vue'),
     },
     {
-      path: '/product/:nameProduct',
+      path: '/product/:nameProduct/:idProduct',
       component: () => import('../views/PayView.vue'),
     },
   ],
 })
+
+new middleware(router)
 
 export default router

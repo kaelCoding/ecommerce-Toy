@@ -1,5 +1,5 @@
 const loadFile = (idFile) => {
-    return `http://localhost:8080/uploads/${idFile}`
+    return `http://localhost:8080/${idFile}`
 }
  
 export default {

@@ -1,9 +1,10 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-// const props = defineProps(["product"])
-const emits = defineEmits(["close"])
+import { add_product_api } from '@/services/product';
+import { files_upload_api } from '@/services/file';
 
+const emits = defineEmits(["close", "createProduct"])
 const close = () => {
     emits("close")
 }
@@ -14,30 +15,27 @@ const product = ref({
     name: "",
     description: "",
     price: "",
-    category: "",
-    image_urls: "",
+    category_name: "",
+    image_urls: [],
 })
 
 const filesInp = ref(null)
 
-
 const handleUploadFiles = async () => {
     const files = filesInp.value.files
-
     const formData = new FormData()
 
     for (const file of files) {
-        formData.append("files", file)
+        formData.append("image", file)
     }
 
     try {
         await files_upload_api(formData).then(res => {
-            post.value.files = res.map(item => {
+            product.value.image_urls = res.map(item => {
                 return {
-                    link: item.id
+                    link: item.Link
                 }
             })
-            console.log(post.value.files)
         })
     } catch (error) {
         console.log(error)
@@ -47,12 +45,23 @@ const handleUploadFiles = async () => {
 const handleClickUploadFile = () => {
     filesInp.value.click()
 }
+
+const createProduct = async () => {
+    try {
+        await add_product_api(product.value).then(res => {
+        emits("createProduct", res)
+    })
+    } catch (error) {
+      console.log(error)  
+    }
+}
 </script>
 
 <template>
     <div class="overlay" @click="close">
         <div class="container-popup" @click.stop="">
-            <form class="product-ctn">
+            <form class="form card" @submit.prevent="createProduct">
+                <h1 style="text-align: center;">CREATE PRODUCT</h1>
                 <label>Name</label>
                 <input type="text" v-model="product.name" placeholder="Enter name">
                 <label>Description</label>
@@ -60,23 +69,29 @@ const handleClickUploadFile = () => {
                 <label>Price</label>
                 <input type="text" v-model="product.price" placeholder="Enter price">
                 <label>Category</label>
-                <input type="text" v-model="product.category" placeholder="Enter category">
+                <input type="text" v-model="product.category_name" placeholder="Enter category">
 
                 <hr>
                 <input style="display: none;" type="file" ref="filesInp" multiple @input="handleUploadFiles">
                 <button style="width: max-content" type="button" @click="handleClickUploadFile">
                     <span class="font-content">Upload files</span>
                 </button>
+
+                <div class="img-ctn" v-if="product.image_urls.length > 0">
+                    <div v-for="(file, index) of product.image_urls" :key="file.link">
+                        <!-- <i class="bi bi-x-circle-fill" @click="removeFile(index)"></i> -->
+                        <img class="product-img" :src="$loadFile(file.link)">
+                    </div>
+                </div>
+                <hr>
+
+                <button type="submit">Create</button>
             </form>
         </div>
     </div>
 </template>
 
 <style scoped>
-* {
-    color: black;
-}
-
 .overlay {
     position: fixed;
     width: 100%;
@@ -91,16 +106,25 @@ const handleClickUploadFile = () => {
 }
 
 .container-popup {
-    background-color: white;
-    min-width: 400px;
-    max-width: 700px;
+    background-color: var(--c-white);
+    width: 400px;
     border-radius: 8px;
-    overflow-y: auto;
+}
+
+.form {
+    margin: 0;
+}
+
+.card {
+    width: 100%;
 }
 
 .product-ctn {
     display: flex;
     flex-flow: column;
+    padding: 12px;
+    width: 100%;
+    height: 100%;
 }
 
 .detail-product {
@@ -115,7 +139,15 @@ const handleClickUploadFile = () => {
     justify-content: space-between;
 }
 
-img {
-    width: 100%;
+.img-ctn {
+    display: flex;
+    gap: 5px;
+    max-width: 400px;
+    overflow-x: auto;
+}
+
+.product-img {
+    width: 216px;
+    height: 216px;
 }
 </style>

@@ -58,7 +58,7 @@ func UploadImage(c *gin.Context) {
         return
     }
 
-    c.JSON(http.StatusCreated, gin.H{"data": uploadedImages})
+    c.JSON(http.StatusCreated, uploadedImages)
 }
 
 func validateFile(file *multipart.FileHeader) error {

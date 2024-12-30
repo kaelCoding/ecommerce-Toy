@@ -1,4 +1,5 @@
 import { computed, ref } from "vue";
+import { auth_info_api } from "@/services/auth";
 
 export const token = ref("")
 
@@ -31,14 +32,14 @@ export const init_auth = async () => {
 export const logout = () => {
     token.value = null
     auth_user.value = null
-
     localStorage.clear()
 }
 
-// export const get_auth_info = async () => {
-//     try {
-//         const data = await au
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+export const get_auth_info = async () => {
+    try {
+        const data = await auth_info_api()
+        auth_user.value = data;
+    } catch (error) {
+        console.log(error)
+    }
+}

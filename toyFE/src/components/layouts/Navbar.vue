@@ -1,20 +1,18 @@
 <script setup>
 import { RouterLink } from 'vue-router';
+import { get_auth_user } from '@/stores/auth';
+import { logout } from '@/stores/auth';
 
 </script>
 
 <template>
   <div class="nav-ctn">
     <RouterLink to="/"><h1>Toni Toku</h1></RouterLink>
-    <ul>
-      <li>Home</li>
-      <li>About Us</li>
-      <li>Gallery</li>
-      <li>Products</li>
-      <li>Blog</li>
-      <li>Contact</li>
-    </ul>
-    <div style="display: flex; gap: 10px;">
+    <div class="text-white info-ctn" v-if="get_auth_user">
+      <h2>{{ get_auth_user.username }}</h2>
+      <b @click="logout">Logout</b>
+    </div>
+    <div v-else style="display: flex; gap: 10px;">
       <RouterLink to="login">Login</RouterLink>
       <RouterLink to="register">Register</RouterLink>
     </div>
@@ -31,15 +29,10 @@ import { RouterLink } from 'vue-router';
   padding: 0 200px;
 }
 
-ul {
+.info-ctn {
   display: flex;
-  list-style: none;
-  gap: 15px;
-}
-
-.tab-text {
-  width: 25%;
-  text-align: center;
-  font-size: 18px;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
 }
 </style>

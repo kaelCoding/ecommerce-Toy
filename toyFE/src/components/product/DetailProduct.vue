@@ -16,10 +16,14 @@ const goPay = () => {
 <template>
     <div class="overlay" @click="close">
         <div class="container-popup" @click.stop="">
-            <img :src="product.img" alt="">
+            <div class="img-ctn" v-if="product.image_urls">
+                <div v-for="(file, index) of product.image_urls" :key="file.link">
+                    <img :src="$loadFile(file.link)">
+                </div>
+            </div>
             <div class="detail-product">
                 <h1>{{ product.name }}</h1>
-                <h3>{{ product.desc }}</h3>
+                <h3>{{ product.description }}</h3>
                 <div class="ctn-price">
                     <span>{{ product.price }}</span>
                     <button @click="goPay">Buy now</button>

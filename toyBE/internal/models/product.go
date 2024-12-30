@@ -9,12 +9,13 @@ import (
 
 type Product struct {
     gorm.Model
-    ID          uint    `gorm:"primaryKey;autoIncrement" json:"ID"`
-    Name        string  `json:"name"`
-    Description string  `gorm:"size:255" json:"description"`
-    Price       float64 `json:"price"`
-    CategoryID  uint    `gorm:"foreignKey:CategoryID" json:"category_id"`
-    ImageURLs   datatypes.JSON `json:"image_urls"`
+    ID              uint            `gorm:"primaryKey;autoIncrement" json:"ID"`
+    Name            string          `json:"name"`
+    Description     string          `gorm:"size:255" json:"description"`
+    Price           string          `json:"price"`
+    CategoryName    string          `gorm:"-" json:"category_name"`
+    CategoryID      uint            `gorm:"foreignKey:CategoryID" json:"category_id"`
+    ImageURLs       datatypes.JSON  `json:"image_urls"`
 }
 
 type Image struct {
@@ -28,9 +29,9 @@ type Image struct {
 
 type Category struct {
     gorm.Model
-    ID          uint    `gorm.Model:"primaryKey;autoIncrement" json:"ID"`
-    Name        string  `gorm:"uniqueIndex;size:255" json:"name"`
-    Description string  `gorm:"size:255" json:"description"`
-    Products    []Product `gorm:"foreignKey:CategoryID;references:ID" json:"product"`
+    ID          uint        `gorm.Model:"primaryKey;autoIncrement" json:"ID"`
+    Name        string      `gorm:"uniqueIndex;size:255" json:"name"`
+    Description string      `gorm:"size:255" json:"description"`
+    Products    []Product   `gorm:"foreignKey:CategoryID;references:ID" json:"product"`
 }
 

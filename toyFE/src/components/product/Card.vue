@@ -1,29 +1,18 @@
 <script setup>
-import Detailproduct from './DetailProduct.vue';
-import { ref } from 'vue';
-const props = defineProps(["product"])
-
-const showPopup = ref(false)
-
-const openPopup = () => {
-  showPopup.value = true
-}
-
-const closePopup = () => {
-  showPopup.value = false
-}
 
 </script>
 
 <template>
-  <Detailproduct :product="product" v-if="showPopup" @close="closePopup"/>
-  <div class="ctn" @click="openPopup">
-    <!-- <div v-if="product.image_urls.length > 0">
-        <img v-for="image of product.image_urls" :key="image.id" :src="$loadFile(image.link)">
-    </div> -->
-    <h2><b>{{ product.name }}</b></h2>
-    <div>{{ product.description }}</div>
-    <div>{{ product.price }}</div>
+  <div>
+    <form class="card form" @submit.prevent="login">
+      <label>Name</label>
+      <input type="text" v-model="dataLogin.username" placeholder="Name">
+
+      <label>Password</label>
+      <input type="password" v-model="dataLogin.password" placeholder="Password">
+
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
   </div>
 </template>
 

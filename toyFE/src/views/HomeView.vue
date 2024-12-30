@@ -1,51 +1,61 @@
 <script setup>
-import Card from "@/components/product/Card.vue"
-import { onBeforeMount, ref } from "vue";
+import ItemProduct from "@/components/product/ItemProduct.vue";
+import { onBeforeMount, ref} from "vue";
 import { get_products_api } from "@/services/product";
 import CreateProduct from "@/components/product/CreateProduct.vue";
+import { get_auth_user } from "@/stores/auth";
 
-const products = ref([])
+const products = ref([]);
 
 onBeforeMount(async () => {
   await getProducts()
+  console.log(get_auth_user.value)
 })
 
 const getProducts = async () => {
-  await get_products_api().then(res => {
+  await get_products_api().then((res) => {
     products.value = res
-    console.log(products.value)
   })
 }
 
-const showPopupCreate = ref(false)
+const showPopupCreate = ref(false);
 
 const openPopupCreate = () => {
-    showPopupCreate.value = true
+  showPopupCreate.value = true
 }
 
 const closePopupCreate = () => {
-    showPopupCreate.value = false
+  showPopupCreate.value = false
 }
 
+const createProduct = async (product) => {
+    products.value.unshift(product)
+    await getProducts()
+    closePopupCreate()
+}
 </script>
 
 <template>
-  <div class="main-ctn">
+  <div class="main">
     <div class="main-product">
-      <button @click="openPopupCreate">Create post</button>
-
-     
+      <div class="btn-container">
+        <button v-if="get_auth_user.admin" style="margin-left: auto;" @click="openPopupCreate">Create post</button>
+      </div>
 
       <div class="ctn-products">
-        <Card v-for="(product, index) of products" :product="product"/>
+        <ItemProduct
+          v-for="(product, index) of products" 
+          :key="product.ID"
+          :product="product" 
+        </ItemProduct>
       </div>
-    </div>
 
-    <CreateProduct 
-      v-if="showPopupCreate"
-      @close="closePopupCreate"
-    />
-      
+      <CreateProduct
+        v-if="showPopupCreate"
+        @close="closePopupCreate"
+        @createProduct="createProduct"
+      />
+    </div>
 
     <div class="footer">
       <div class="block">
@@ -73,19 +83,21 @@ const closePopupCreate = () => {
 </template>
 
 <style scoped>
-.main-ctn {
-  display: flex;
-  flex-flow: column;
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  flex: 1;
+.main {
+  flex-wrap: wrap;
 }
 
 .main-product {
+  height: min-content;
   width: 100%;
   height: min-content;
   padding: 0 200px;
+}
+
+.btn-container {
+  margin-top: 24px;
+  display: flex;
+  margin-bottom: 24px;
 }
 
 .desc-ctn {
@@ -101,17 +113,21 @@ const closePopupCreate = () => {
 
 .ctn-products {
   display: flex;
+  gap: 24px;
   width: 100%;
   flex-wrap: wrap;
+  margin-bottom: 24px;
   justify-content: space-between;
 }
 
 .footer {
   display: flex;
-  min-height: 200px;
-  background-color: #161616;;
+  min-height: 250px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--c-black);
   width: 100%;
-  padding: 24px 200px;
+  color: var(--c-white);
 }
 
 .block {

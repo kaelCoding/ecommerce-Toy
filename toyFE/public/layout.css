@@ -13,7 +13,7 @@ nav {
     width: 100%;
     height: 90px;
     z-index: 2;
-    background-color: #161616;
+    background-color: var(--c-black);
 }
 
 main {
@@ -22,5 +22,33 @@ main {
     width: 100%;
     left: 0;
     bottom: 0;
-    background-color: #121212;
+    background-color: var(--c-white-light);
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: var(--c-white-light);
+}
+
+.main-left {
+    width: 20%;
+    padding: 24px;
+    padding-right: 0px;
+    /* overflow-y: auto; */
+}
+
+.main-center {
+    width: 100%;
+    padding: 24px;
+    /* overflow-y: auto; */
+}
+
+.main-right {
+    width: 20%;
+    padding: 24px;
+    padding-left: 0px;
+    overflow-y: auto;
 }

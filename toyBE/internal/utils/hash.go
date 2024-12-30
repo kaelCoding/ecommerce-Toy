@@ -8,6 +8,7 @@ import (
   "crypto/rand"
   "crypto/subtle"
   "strings"
+  "strconv"
 )
 
 var (
@@ -96,4 +97,12 @@ func decodeHash(encodedHash string) (*HashParams, []byte, []byte, error) {
   p.KeyLength = uint32(len(hash))
 
   return p, salt, hash, nil
+}
+
+func ParseUintOrError(s string) uint {
+  parsed, err := strconv.ParseUint(s, 10, 32) 
+  if err != nil {
+    return 0 
+  }
+  return uint(parsed)
 }
